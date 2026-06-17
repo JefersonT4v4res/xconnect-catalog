@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>X Connect Importados PY</title>
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="navbar" aria-label="Navegação principal">
+      <a class="navbar__brand" href="#catalogo" aria-label="X Connect início">
+        <img class="navbar__logo" src="./assets/xconnect-logo.png" alt="Logo X Connect Importados PY" />
+        <span class="navbar__brand-text">X Connect</span>
+      </a>
+      <form class="navbar__search" role="search">
+        <label class="sr-only" for="searchInput">Pesquisar produtos</label>
+        <input id="searchInput" class="navbar__search-input" type="search" placeholder="O que você deseja comprar?" />
+        <button class="navbar__search-button" type="submit" aria-label="Pesquisar">⌕</button>
+      </form>
+      <button class="navbar__toggle" type="button" aria-controls="navbarMenu" aria-expanded="false">
+        <span></span><span></span><span></span><span class="sr-only">Abrir menu</span>
+      </button>
+      <div class="navbar__menu" id="navbarMenu">
+        <a class="navbar__link" href="#cotacao">Cotação</a>
+        <a class="navbar__link" href="#categorias">Categorias</a>
+        <a class="navbar__link" href="#catalogo">Produtos</a>
+        <a class="navbar__whatsapp" id="navWhatsapp" href="#" target="_blank" rel="noopener">WhatsApp</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div class="hero__content">
+        <p class="hero__eyebrow">Importados PY • Catálogo online</p>
+        <h1 class="hero__title">Tecnologia, acessórios e eletrônicos direto no WhatsApp.</h1>
+        <p class="hero__description">Consulte produtos, veja a cotação do dólar, filtre por categoria e finalize o pedido direto com a X Connect.</p>
+        <div class="hero__actions">
+          <a class="button button--primary" href="#catalogo">Ver catálogo</a>
+          <a class="button button--secondary" id="heroWhatsapp" href="#" target="_blank" rel="noopener">Falar com a loja</a>
+        </div>
+      </div>
+
+      <aside class="quote-card" id="cotacao">
+        <div class="quote-card__head"><span>%</span><h2>Cotação do dólar</h2></div>
+        <div class="quote-card__rate"><span>Dólar hoje:</span><strong>R$ 5,22</strong></div>
+        <label for="usdValue">Insira o valor em dólares</label>
+        <div class="quote-card__field"><input id="usdValue" type="number" min="0" value="100" /><span>US$</span></div>
+        <label for="currencySelect">Moeda escolhida</label>
+        <select id="currencySelect"><option value="BRL">🇧🇷 Real</option><option value="PYG">🇵🇾 Guarani</option></select>
+        <div class="quote-card__result"><span id="conversionLabel">Total em Real</span><strong id="conversionResult">R$ 522,00</strong></div>
+        <p>Atualizado em: 17 de Junho de 2026 às 09:45</p>
+      </aside>
+    </section>
+
+    <section class="filters" id="categorias">
+      <div class="section-heading"><p>Categorias</p><h2>Loja completa</h2></div>
+      <div class="filters__chips" id="categoryChips"></div>
+    </section>
+
+    <section class="catalog" id="catalogo">
+      <div class="catalog__top">
+        <div class="section-heading"><p>Produtos disponíveis</p><h2>Catálogo X Connect</h2><small id="productCount"></small></div>
+        <div class="catalog__controls">
+          <label>Ordenar<select id="sortSelect"><option value="relevance">Relevância</option><option value="priceAsc">Menor preço</option><option value="priceDesc">Maior preço</option><option value="nameAsc">Nome A-Z</option></select></label>
+          <label>Filtrar<select id="brandSelect"><option value="all">Todas as marcas</option></select></label>
+        </div>
+      </div>
+      <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <section class="product-view" id="produto" hidden>
+      <button class="product-view__back" type="button" id="backToCatalog">← Voltar ao catálogo</button>
+      <div class="product-detail">
+        <div class="product-detail__gallery"><img id="detailImage" class="product-detail__image" src="" alt="" /><button class="product-detail__thumb" type="button"><img id="detailThumb" src="" alt="" /></button></div>
+        <article class="product-detail__info">
+          <p class="product-detail__breadcrumb">Início / <span id="detailCategory"></span></p>
+          <h2 id="detailTitle"></h2>
+          <div class="product-detail__rating">★★★★<span>★</span></div>
+          <p class="product-detail__price" id="detailPrice"></p>
+          <div class="product-detail__quantity"><b>Quantidade</b><div class="quantity"><button id="qtyMinus" type="button">−</button><output id="qtyValue">1</output><button id="qtyPlus" type="button">+</button></div></div>
+          <div class="product-detail__actions"><a class="button button--primary" id="detailWhatsapp" target="_blank" rel="noopener">Pedir no WhatsApp</a><button class="button button--secondary" type="button" id="copyProduct">Copiar link</button></div>
+          <dl><div><dt>Marca:</dt><dd id="detailBrand"></dd></div><div><dt>Código:</dt><dd id="detailCode"></dd></div></dl>
+          <h3>Descrição</h3><p id="detailDescription"></p><ul id="detailSpecs"></ul>
+        </article>
+      </div>
+    </section>
+  </main>
+  <a class="floating-whatsapp" id="floatingWhatsapp" href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">☘</a>
+  <footer class="footer">© 2026 X Connect Importados PY. Catálogo demonstrativo.</footer>
+  <script src="./js/script.js"></script>
+</body>
+</html>
