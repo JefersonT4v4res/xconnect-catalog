@@ -13,14 +13,25 @@
         <img class="navbar__logo" src="./assets/xconnect-logo.png" alt="Logo X Connect Importados PY" />
         <span class="navbar__brand-text">X Connect</span>
       </a>
+
       <form class="navbar__search" role="search">
         <label class="sr-only" for="searchInput">Pesquisar produtos</label>
         <input id="searchInput" class="navbar__search-input" type="search" placeholder="O que você deseja comprar?" />
         <button class="navbar__search-button" type="submit" aria-label="Pesquisar">⌕</button>
       </form>
-      <button class="navbar__toggle" type="button" aria-controls="navbarMenu" aria-expanded="false">
-        <span></span><span></span><span></span><span class="sr-only">Abrir menu</span>
+
+      <button class="navbar__bag" id="openBag" type="button" aria-label="Abrir sacolinha de interesses">
+        <span>🛍</span>
+        <strong id="bagCount">0</strong>
       </button>
+
+      <button class="navbar__toggle" type="button" aria-controls="navbarMenu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span class="sr-only">Abrir menu</span>
+      </button>
+
       <div class="navbar__menu" id="navbarMenu">
         <a class="navbar__link" href="#cotacao">Cotação</a>
         <a class="navbar__link" href="#categorias">Categorias</a>
@@ -33,62 +44,248 @@
   <main class="page">
     <section class="hero">
       <div class="hero__content">
-        <p class="hero__eyebrow">Importados PY • Catálogo online</p>
-        <h1 class="hero__title">Tecnologia, acessórios e eletrônicos direto no WhatsApp.</h1>
-        <p class="hero__description">Consulte produtos, veja a cotação do dólar, filtre por categoria e finalize o pedido direto com a X Connect.</p>
+        <p class="hero__eyebrow">Importados PY • Catálogo curado</p>
+        <h1 class="hero__title">Produtos selecionados de várias lojas do Paraguai.</h1>
+        <p class="hero__description">
+          Consulte ofertas de lojas parceiras, filtre por categoria, marca e preço, adicione itens à sacolinha de interesse e envie tudo pelo WhatsApp da X Connect.
+        </p>
         <div class="hero__actions">
           <a class="button button--primary" href="#catalogo">Ver catálogo</a>
-          <a class="button button--secondary" id="heroWhatsapp" href="#" target="_blank" rel="noopener">Falar com a loja</a>
+          <button class="button button--secondary" type="button" id="heroOpenBag">Ver sacolinha</button>
         </div>
       </div>
 
       <aside class="quote-card" id="cotacao">
-        <div class="quote-card__head"><span>%</span><h2>Cotação do dólar</h2></div>
-        <div class="quote-card__rate"><span>Dólar hoje:</span><strong>R$ 5,22</strong></div>
-        <label for="usdValue">Insira o valor em dólares</label>
-        <div class="quote-card__field"><input id="usdValue" type="number" min="0" value="100" /><span>US$</span></div>
-        <label for="currencySelect">Moeda escolhida</label>
-        <select id="currencySelect"><option value="BRL">🇧🇷 Real</option><option value="PYG">🇵🇾 Guarani</option></select>
-        <div class="quote-card__result"><span id="conversionLabel">Total em Real</span><strong id="conversionResult">R$ 522,00</strong></div>
-        <p>Atualizado em: 17 de Junho de 2026 às 09:45</p>
+        <div class="quote-card__head">
+          <span>%</span>
+          <h2>Cotação e cálculo</h2>
+        </div>
+
+        <div class="quote-tabs" role="tablist" aria-label="Ferramentas de cotação">
+          <button class="quote-tabs__button is-active" type="button" data-tab="converter">Conversor</button>
+          <button class="quote-tabs__button" type="button" data-tab="tax">Imposto</button>
+          <button class="quote-tabs__button" type="button" data-tab="card">Cartão</button>
+          <button class="quote-tabs__button" type="button" data-tab="history">Histórico</button>
+        </div>
+
+        <div class="quote-card__rate">
+          <span>Dólar hoje:</span>
+          <strong>R$ 5,22</strong>
+        </div>
+
+        <div class="quote-panel is-active" id="converterPanel">
+          <label for="usdValue">Insira o valor em dólares</label>
+          <div class="quote-card__field">
+            <input id="usdValue" type="number" min="0" value="100" />
+            <span>US$</span>
+          </div>
+
+          <label for="currencySelect">Moeda escolhida</label>
+          <select id="currencySelect">
+            <option value="BRL">🇧🇷 Real</option>
+            <option value="PYG">🇵🇾 Guarani</option>
+          </select>
+
+          <div class="quote-card__result">
+            <span id="conversionLabel">Total em Real</span>
+            <strong id="conversionResult">R$ 522,00</strong>
+          </div>
+        </div>
+
+        <div class="quote-panel" id="taxPanel">
+          <p class="quote-panel__text">
+            Compras até <strong>US$ 500</strong> são consideradas dentro da cota de isenção. Acima disso, o imposto pode ser calculado sobre o excedente.
+          </p>
+          <label for="taxValue">Valor da compra em US$</label>
+          <div class="quote-card__field">
+            <input id="taxValue" type="number" min="0" value="650" />
+            <span>US$</span>
+          </div>
+          <div class="quote-card__result">
+            <span>Estimativa de imposto</span>
+            <strong id="taxResult">US$ 75,00</strong>
+          </div>
+        </div>
+
+        <div class="quote-panel" id="cardPanel">
+          <p class="quote-panel__text">Simulação com acréscimo para compra no cartão internacional.</p>
+          <label for="cardValue">Valor em US$</label>
+          <div class="quote-card__field">
+            <input id="cardValue" type="number" min="0" value="100" />
+            <span>US$</span>
+          </div>
+          <div class="quote-card__result">
+            <span>Total estimado no cartão</span>
+            <strong id="cardResult">R$ 548,10</strong>
+          </div>
+        </div>
+
+        <div class="quote-panel" id="historyPanel">
+          <ul class="history-list">
+            <li><span>Hoje</span><strong>R$ 5,22</strong></li>
+            <li><span>Ontem</span><strong>R$ 5,18</strong></li>
+            <li><span>Semana passada</span><strong>R$ 5,25</strong></li>
+          </ul>
+        </div>
+
+        <p class="quote-card__updated">Atualizado em: 17 de Junho de 2026 às 20:45</p>
       </aside>
     </section>
 
-    <section class="filters" id="categorias">
-      <div class="section-heading"><p>Categorias</p><h2>Loja completa</h2></div>
-      <div class="filters__chips" id="categoryChips"></div>
-    </section>
+    <section class="category-menu" id="categorias">
+      <div class="category-menu__tabs" aria-label="Menu de categorias">
+        <button class="category-menu__tab is-active" type="button" data-menu-category="Eletrônicos">☰ Categorias</button>
+        <button class="category-menu__tab" type="button" data-menu-category="Lojas">🏬 Lojas</button>
+        <button class="category-menu__tab" type="button" data-menu-category="Marcas">🏷 Marcas</button>
+        <button class="category-menu__tab" type="button" data-menu-category="Descontos">% Descontos</button>
+      </div>
 
-    <section class="catalog" id="catalogo">
-      <div class="catalog__top">
-        <div class="section-heading"><p>Produtos disponíveis</p><h2>Catálogo X Connect</h2><small id="productCount"></small></div>
-        <div class="catalog__controls">
-          <label>Ordenar<select id="sortSelect"><option value="relevance">Relevância</option><option value="priceAsc">Menor preço</option><option value="priceDesc">Maior preço</option><option value="nameAsc">Nome A-Z</option></select></label>
-          <label>Filtrar<select id="brandSelect"><option value="all">Todas as marcas</option></select></label>
+      <div class="mega-menu">
+        <aside class="mega-menu__sidebar" id="megaSidebar"></aside>
+        <div class="mega-menu__content">
+          <h2 id="megaTitle">Eletrônicos & Eletrodomésticos</h2>
+          <div class="mega-menu__grid" id="megaGrid"></div>
         </div>
       </div>
-      <div class="product-grid" id="productGrid"></div>
     </section>
 
-    <section class="product-view" id="produto" hidden>
-      <button class="product-view__back" type="button" id="backToCatalog">← Voltar ao catálogo</button>
+    <section class="catalog-shell" id="catalogo">
+      <aside class="sidebar-filters" aria-label="Filtros do catálogo">
+        <div class="sidebar-filters__head">
+          <h2>Filtros</h2>
+          <button type="button" id="clearFilters">Limpar</button>
+        </div>
+
+        <fieldset class="filter-group">
+          <legend>Lojas</legend>
+          <div class="filter-group__scroll" id="storeFilters"></div>
+        </fieldset>
+
+        <fieldset class="filter-group">
+          <legend>Marcas</legend>
+          <div class="filter-group__scroll" id="brandFilters"></div>
+        </fieldset>
+
+        <fieldset class="filter-group">
+          <legend>Preço</legend>
+          <div class="price-ranges" id="priceRanges"></div>
+          <div class="price-inputs">
+            <input id="minPrice" type="number" min="0" placeholder="Min US$" />
+            <input id="maxPrice" type="number" min="0" placeholder="Max US$" />
+            <button id="applyPrice" type="button">Ok</button>
+          </div>
+        </fieldset>
+      </aside>
+
+      <section class="catalog">
+        <div class="catalog__top">
+          <div class="section-heading">
+            <p>Produtos disponíveis</p>
+            <h2>Catálogo X Connect</h2>
+            <small id="productCount"></small>
+          </div>
+
+          <div class="catalog__controls">
+            <label>
+              Ordenar
+              <select id="sortSelect">
+                <option value="relevance">Relevância</option>
+                <option value="priceAsc">Menor preço</option>
+                <option value="priceDesc">Maior preço</option>
+                <option value="nameAsc">Nome A-Z</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <div class="active-filters" id="activeFilters"></div>
+        <div class="product-grid" id="productGrid"></div>
+      </section>
+    </section>
+
+  </main>
+
+  <aside class="product-modal" id="produto" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+    <div class="product-modal__overlay" id="closeProductOverlay"></div>
+
+    <section class="product-modal__panel">
+      <button class="product-modal__close" type="button" id="closeProductModal" aria-label="Fechar detalhes do produto">×</button>
+
       <div class="product-detail">
-        <div class="product-detail__gallery"><img id="detailImage" class="product-detail__image" src="" alt="" /><button class="product-detail__thumb" type="button"><img id="detailThumb" src="" alt="" /></button></div>
+        <div class="product-detail__gallery">
+          <img id="detailImage" class="product-detail__image" src="" alt="" />
+          <button class="product-detail__thumb" type="button">
+            <img id="detailThumb" src="" alt="" />
+          </button>
+        </div>
+
         <article class="product-detail__info">
           <p class="product-detail__breadcrumb">Início / <span id="detailCategory"></span></p>
           <h2 id="detailTitle"></h2>
           <div class="product-detail__rating">★★★★<span>★</span></div>
           <p class="product-detail__price" id="detailPrice"></p>
-          <div class="product-detail__quantity"><b>Quantidade</b><div class="quantity"><button id="qtyMinus" type="button">−</button><output id="qtyValue">1</output><button id="qtyPlus" type="button">+</button></div></div>
-          <div class="product-detail__actions"><a class="button button--primary" id="detailWhatsapp" target="_blank" rel="noopener">Pedir no WhatsApp</a><button class="button button--secondary" type="button" id="copyProduct">Copiar link</button></div>
-          <dl><div><dt>Marca:</dt><dd id="detailBrand"></dd></div><div><dt>Código:</dt><dd id="detailCode"></dd></div></dl>
-          <h3>Descrição</h3><p id="detailDescription"></p><ul id="detailSpecs"></ul>
+          <p class="product-detail__price-brl" id="detailPriceBrl"></p>
+
+          <div class="product-detail__quantity">
+            <b>Quantidade</b>
+            <div class="quantity">
+              <button id="qtyMinus" type="button">−</button>
+              <output id="qtyValue">1</output>
+              <button id="qtyPlus" type="button">+</button>
+            </div>
+          </div>
+
+          <div class="product-detail__actions">
+            <button class="button button--primary" type="button" id="detailAddBag">Adicionar à sacolinha</button>
+            <a class="button button--secondary" id="detailWhatsapp" target="_blank" rel="noopener">Pedir este item</a>
+          </div>
+
+          <dl>
+            <div><dt>Loja:</dt><dd id="detailStore"></dd></div>
+            <div><dt>Marca:</dt><dd id="detailBrand"></dd></div>
+            <div><dt>Código:</dt><dd id="detailCode"></dd></div>
+          </dl>
+
+          <h3>Descrição</h3>
+          <p id="detailDescription"></p>
+          <ul id="detailSpecs"></ul>
         </article>
       </div>
     </section>
-  </main>
+  </aside>
+
+
+  <aside class="bag-drawer" id="bagDrawer" aria-hidden="true">
+    <div class="bag-drawer__overlay" id="closeBagOverlay"></div>
+
+    <section class="bag-drawer__panel" aria-labelledby="bagTitle">
+      <header class="bag-drawer__head">
+        <div>
+          <p>Sacolinha de interesses</p>
+          <h2 id="bagTitle">Itens selecionados</h2>
+        </div>
+        <button type="button" id="closeBag">×</button>
+      </header>
+
+      <div class="bag-list" id="bagList"></div>
+
+      <footer class="bag-drawer__footer">
+        <div class="bag-total">
+          <span>Total estimado</span>
+          <strong id="bagTotal">US$ 0,00</strong>
+          <small id="bagTotalBrl">R$ 0,00</small>
+        </div>
+        <a class="button button--primary" id="sendBagWhatsapp" href="#" target="_blank" rel="noopener">Enviar pelo WhatsApp</a>
+      </footer>
+    </section>
+  </aside>
+
   <a class="floating-whatsapp" id="floatingWhatsapp" href="#" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">☘</a>
-  <footer class="footer">© 2026 X Connect Importados PY. Catálogo demonstrativo.</footer>
+
+  <footer class="footer">
+    © 2026 X Connect Importados PY. Catálogo demonstrativo.
+  </footer>
+
   <script src="./js/script.js"></script>
 </body>
 </html>
